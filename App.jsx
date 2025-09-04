@@ -1,17 +1,19 @@
 export default function Hangman() {
     return (
-        <>
+        <main>
             <header>
                 <h1>Assembly: Endgame</h1>
-                <p>Guess the word in under 8 attempts to keep the programming world
-                safe from Assembly!</p>
+                <p>Guess the word within 8 attempts to keep the 
+                programming world safe from Assembly!</p>
             </header>
-            <main>
-                Game goes here
-            </main>
-        </>
+            <section className="game-status">
+                <h2>You Win!</h2>
+                <p>Well done! 🎉</p>
+            </section>
+        </main>
     )
 }
+
 
 
 /**
