@@ -41,6 +41,7 @@ export default function Hangman() {
           <section className="keyboard">
             {keyboardElements}
           </section>
+          <button className="new-game">New Game</button>
       </main>
   )
 }
