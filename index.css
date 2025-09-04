@@ -34,6 +34,7 @@ main {
 }
 
 header {
+  margin: 0 auto;
   text-align: center;
   max-width: 350px;
 }
@@ -68,6 +69,60 @@ section.game-status > h2 {
 section.game-status > p {
     margin: 0;
     padding: 0;
+}
+
+section.language-chips {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 1.5em auto;
+  gap: 5px;
+  justify-content: center;
+  max-width: 90%;
+}
+
+span.language-chip {
+  border-radius: 3px;
+  font-weight: 700;
+  padding: .5em;
+}
+
+section.word {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+span.letter {
+  font-size: 1.125rem;
+  font-weight: bold;
+  padding: .50em 1em;
+  background-color: #323232;
+  color: #F9F4DA;
+  border-bottom: 2px solid #F9F4DA;
+  margin: 0 1px;
+}
+
+section.keyboard {
+  margin: 1em 0;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+button {
+  cursor: pointer;
+}
+
+button.key {
+  font-size: 1.25rem;
+  background-color: #FCBA29;
+  color: black;
+  width: 2.25em;
+  height: 2.25em;
+  border: 1px solid white;
+  border-radius: 5px;
 }
 
 @media (prefers-color-scheme: light) {
