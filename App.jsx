@@ -1,25 +1,33 @@
 import { languages } from "./languages.js"
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { nanoid } from "nanoid"
 
 
 export default function Hangman() {
+
+    const [guessedLetters, setGuessedLetters] = useState(() => new Set())
+    const [word, setWord] = useState(() => "react")
+    const alphabet = "abcdefghijklmnopqrstuvwxyz"
 
   const languageElements = languages.map(lang => {
     const styles = {
       backgroundColor: lang.backgroundColor,
       color: lang.color
     }
-    return <span className="language-chip" key={lang.name}style={styles}>{lang.name}</span>
+    return <span className="language-chip" key={lang.name} style={styles}>{lang.name}</span>
   })
 
-  const [word, setWord] = useState(() => "react")
+  const letterElements = word.split('').map(letter => (
+    <span className="letter" key={nanoid()}>{letter.toUpperCase()}</span>)
+  )
 
-  const letterElements = word.split('').map(letter => <span className="letter" key={nanoid()}>{letter.toUpperCase()}</span>)
+  const keyboardElements = alphabet.split('').map(letter => (
+    <button className={`key ${guessedLetters.has(letter) && word.includes(letter) ? "correct" : guessedLetters.has(letter) && !word.includes(letter) ? "incorrect" : ""}`} onClick={() => addGuessedLetter(letter)}>{letter.toUpperCase()}</button>
+  ))
 
-  const alphabet = "abcdefghijklmnopqrstuvwxyz"
-
-  const keyboardElements = alphabet.split('').map(letter => <button className="key">{letter.toUpperCase()}</button>)
+  function addGuessedLetter(letter) {
+    setGuessedLetters(prevLetters => new Set(prevLetters).add(letter))
+  }
 
   return (
       <main>
