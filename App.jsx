@@ -8,22 +8,34 @@ export default function Hangman() {
     const [guessedLetters, setGuessedLetters] = useState(() => new Set())
     const [word, setWord] = useState(() => "react")
     const alphabet = "abcdefghijklmnopqrstuvwxyz"
+    const wrongGuessCount = [...guessedLetters].reduce((acc, letter) => !word.includes(letter) ? acc + 1 : acc, 0)
+    const isGameWon = word.split("").every(letter => guessedLetters.has(letter))
+    const isGameLost = wrongGuessCount === languages.length - 1
+    
 
-  const languageElements = languages.map(lang => {
+  const languageElements = languages.map((lang, index) => {
     const styles = {
       backgroundColor: lang.backgroundColor,
       color: lang.color
     }
-    return <span className="language-chip" key={lang.name} style={styles}>{lang.name}</span>
+    return <span className={`language-chip ${index < wrongGuessCount ? "lost" : ""}`} key={lang.name} style={styles}>{lang.name}</span>
   })
 
+  
+
   const letterElements = word.split('').map(letter => (
-    <span className="letter" key={nanoid()}>{letter.toUpperCase()}</span>)
+    <span className="letter" key={nanoid()}>{guessedLetters.has(letter) ? letter.toUpperCase() : ""}</span>)
   )
 
-  const keyboardElements = alphabet.split('').map(letter => (
-    <button className={`key ${guessedLetters.has(letter) && word.includes(letter) ? "correct" : guessedLetters.has(letter) && !word.includes(letter) ? "incorrect" : ""}`} onClick={() => addGuessedLetter(letter)}>{letter.toUpperCase()}</button>
-  ))
+  const keyboardElements = alphabet.split('').map(letter => {
+    const isGuessed = guessedLetters.has(letter)
+    const inWord = word.includes(letter)
+    const correctStatus = 
+        isGuessed && inWord ? "correct" :
+        isGuessed && !inWord ? "incorrect" :
+        ""
+    return <button className={`key ${correctStatus}`} onClick={() => addGuessedLetter(letter)}>{letter.toUpperCase()}</button>
+  })
 
   function addGuessedLetter(letter) {
     setGuessedLetters(prevLetters => new Set(prevLetters).add(letter))
@@ -36,10 +48,13 @@ export default function Hangman() {
             <p>Guess the word within 8 attempts to keep the 
             programming world safe from Assembly!</p>
           </header>
-          <section className="game-status">
-            <h2>You Win!</h2>
-            <p>Well done! 🎉</p>
-          </section>
+          <section className={`game-status ${isGameWon ? "won" : isGameLost ? "lost" : ""}`}>
+                {
+                isGameWon ?  <><h2>You win!</h2><p>Well done! 🎉</p></> : 
+                isGameLost ? <><h2>Game Over!</h2><p>You lose! Better start learning Assembly!</p></> : 
+                             <><h2></h2><p></p></>
+                }
+            </section>
           <section className="language-chips">
             {languageElements}
           </section>
@@ -49,7 +64,7 @@ export default function Hangman() {
           <section className="keyboard">
             {keyboardElements}
           </section>
-          <button className="new-game">New Game</button>
+          {isGameLost ? <button className="new-game">New Game</button> : null}
       </main>
   )
 }

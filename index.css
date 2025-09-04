@@ -53,23 +53,32 @@ header > p {
 }
 
 section.game-status {
-  background-color: #10A95B;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
+  height: 60px;
+  padding: 1px;
   margin: 0 auto;
   border-radius: 4px;
-}
 
-section.game-status > h2 {
-  margin: 0;
-  padding: 0;
-}
+  & h2 { 
+    margin: 0;
+    padding: 0;
+  }
 
-section.game-status > p {
-  margin: 0;
-  padding: 0;
+  & p {
+    margin: 0;
+    padding: 0;
+  }
+
+  &.won {
+      background-color: #10A95B;
+  }
+
+  &.lost {
+      background-color: #BA2A2A;
+  }
+
 }
 
 section.language-chips {
@@ -79,12 +88,27 @@ section.language-chips {
   gap: 5px;
   justify-content: center;
   max-width: 90%;
-}
 
-span.language-chip {
-  border-radius: 3px;
-  font-weight: 700;
-  padding: .5em;
+  & span.language-chip {
+    border-radius: 3px;
+    font-weight: 700;
+    padding: .5em;
+    position: relative;
+
+    &.lost::before {
+      content: "💀";
+      position: absolute;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      width: 100%;
+      font-size: 0.85rem;
+      top: 0;
+      left: 0;
+      background-color: rgba(0, 0, 0, 0.7);
+    }
+  }
 }
 
 section.word {
@@ -92,16 +116,19 @@ section.word {
   justify-content: center;
   flex-wrap: wrap;
   width: 100%;
-}
-
-span.letter {
-  font-size: 1.125rem;
-  font-weight: bold;
-  padding: .50em 1em;
-  background-color: #323232;
-  color: #F9F4DA;
-  border-bottom: 2px solid #F9F4DA;
-  margin: 0 1px;
+  & span.letter {
+    font-size: 1.125rem;
+    font-weight: bold;
+    width: 3em;
+    height: 3em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #323232;
+    color: #F9F4DA;
+    border-bottom: 2px solid #F9F4DA;
+    margin: 0 1px;
+  }
 }
 
 section.keyboard {
