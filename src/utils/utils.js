@@ -1,4 +1,4 @@
-import { words } from "./words"
+import { words } from "/src/data/words"
 
 export function getRandomWord() {
     return words[Math.floor(Math.random() * words.length)]

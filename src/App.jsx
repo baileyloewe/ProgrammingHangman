@@ -1,7 +1,7 @@
-import { languages } from "./languages.js"
+import { languages } from "/src/data/languages.js"
 import { useState, useEffect, useRef } from 'react'
 import { nanoid } from "nanoid"
-import { getFarewellText, getRandomWord } from "./utils.js"
+import { getFarewellText, getRandomWord } from "/src/utils/utils.js"
 
 
 export default function Hangman() {
