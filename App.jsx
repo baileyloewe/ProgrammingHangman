@@ -1,13 +1,13 @@
 import { languages } from "./languages.js"
 import { useState, useEffect, useRef } from 'react'
 import { nanoid } from "nanoid"
-import { getFarewellText } from "./utils.js"
+import { getFarewellText, getRandomWord } from "./utils.js"
 
 
 export default function Hangman() {
 
   const [guessedLetters, setGuessedLetters] = useState(() => new Set())
-  const [word, setWord] = useState(() => "react")
+  const [word, setWord] = useState(() => getRandomWord())
   const alphabet = "abcdefghijklmnopqrstuvwxyz"
   const wrongGuessCount = [...guessedLetters].reduce((acc, letter) => !word.includes(letter) ? acc + 1 : acc, 0)
   const isGameWon = word.split("").every(letter => guessedLetters.has(letter))
@@ -25,7 +25,7 @@ export default function Hangman() {
   })
 
   const letterElements = word.split('').map(letter => (
-    <span className="letter" key={nanoid()}>{guessedLetters.has(letter) ? letter.toUpperCase() : ""}</span>)
+    <span className={`letter ${isGameOver && !guessedLetters.has(letter) ? "wrong" : ""}`} key={nanoid()}>{guessedLetters.has(letter) || isGameOver ? letter.toUpperCase() : ""}</span>)
   )
 
   const keyboardElements = alphabet.split('').map(letter => {
@@ -36,7 +36,7 @@ export default function Hangman() {
         isGuessed && !inWord ? "incorrect" :
         isGameOver ? "disabled" : ""
     const disabled = isGameOver ? "disabled" : ""
-    return <button disabled={isGameOver} aria-label={`Letter: ${letter}`}aria-disabled={Array.from(guessedLetters).includes(letter)} className={`key ${correctStatus} ${disabled}`} onClick={() => addGuessedLetter(letter)}>{letter.toUpperCase()}</button>
+    return <button key={letter} disabled={isGameOver} aria-label={`Letter: ${letter}`} aria-disabled={Array.from(guessedLetters).includes(letter)} className={`key ${correctStatus} ${disabled}`} onClick={() => addGuessedLetter(letter)}>{letter.toUpperCase()}</button>
   })
 
   function addGuessedLetter(letter) {
@@ -45,11 +45,16 @@ export default function Hangman() {
   }
 
   function renderGameStatus() {
-    if (!isGameOver && isLastGuessIncorrect) { return <><h2>{getFarewellText(languages[wrongGuessCount - 1].name)}</h2></> }
+    if (!isGameOver && isLastGuessIncorrect && wrongGuessCount > 0) { return <><h2>{getFarewellText(languages[wrongGuessCount - 1].name)}</h2></> }
     
     if (isGameWon) { return <><h2>You win!</h2><p>Well done! 🎉</p></> }
     else if (isGameLost) { return <><h2>Game Over!</h2><p>You lose! Better start learning Assembly!</p></> }
     else { return <><h2></h2><p></p></> }
+  }
+
+  function resetGame() {
+    setWord(getRandomWord())
+    setGuessedLetters(new Set([]))
   }
 
   return (
@@ -86,7 +91,7 @@ export default function Hangman() {
           <section className="keyboard">
             {keyboardElements}
           </section>
-          {isGameLost ? <button className="new-game">New Game</button> : null}
+          {isGameOver ? <button onClick={() => resetGame()} className="new-game">New Game</button> : null}
       </main>
   )
 }
