@@ -1,0 +1,8 @@
+services:
+  hangman:
+    build: .
+    ports:
+      - "${PORT:-3042}:${PORT:-3042}"
+    environment:
+      - PORT=${PORT:-3042}
+    container_name: programming-hangman
