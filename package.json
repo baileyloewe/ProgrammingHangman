@@ -3,11 +3,14 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "scripts": {
+    "scripts": {
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "start": "npm run build && npm run preview",
+    "setup": "npm install && npm run start",
+    "test": "echo 'No tests specified' && exit 0"
   },
   "dependencies": {
     "nanoid": "^5.1.5",
