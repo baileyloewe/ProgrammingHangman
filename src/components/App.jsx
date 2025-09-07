@@ -1,5 +1,5 @@
 import { languages } from "/src/data/languages.js"
-import { useState, useEffect, useRef } from 'react'
+import { useState } from 'react'
 import { nanoid } from "nanoid"
 import { getFarewellText, getRandomWord } from "/src/utils/utils.js"
 
