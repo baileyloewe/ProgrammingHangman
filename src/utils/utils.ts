@@ -1,8 +1,7 @@
-import { words } from "../data/words"
-import { type Language} from "../data/languages"
+import { words } from "../data/words.js"
 
 export function getRandomWord(): string {
-    return words[Math.floor(Math.random() * words.length)]
+    return words[Math.floor(Math.random() * words.length)] || ""
 }
 
 export function getFarewellText(language: string): string {
@@ -19,8 +18,8 @@ export function getFarewellText(language: string): string {
         `${language}, it's been real`,
         `${language}, your watch has ended`,
         `${language} has left the building`
-    ];
+    ]
 
-    const randomIndex: number = Math.floor(Math.random() * options.length);
-    return options[randomIndex];
+    const randomIndex: number = Math.floor(Math.random() * options.length)
+    return options[randomIndex] || ""
 }

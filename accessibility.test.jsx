@@ -1,6 +1,7 @@
 import { test, expect } from 'vitest'
 import { render, screen } from '@testing-library/react'
-import App from '/src/components/App.jsx'
+import App from './src/components/App.jsx'
+import React from 'react'
 
 test("Ensures sr-only content is available", () => {
     render(<App />)

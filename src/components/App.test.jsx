@@ -1,8 +1,8 @@
 import { vi, describe, test, expect } from 'vitest'
 import { render, screen} from '@testing-library/react'
-
-import App from '/src/components/App.jsx'
-import * as utils from '/src/utils/utils.js'
+import React from "react"
+import App from './App.js'
+import * as utils from '../utils/utils.js'
 
 
 describe("App", () => {
