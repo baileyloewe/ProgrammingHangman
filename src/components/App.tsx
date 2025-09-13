@@ -1,22 +1,24 @@
-import { languages } from "/src/data/languages.js"
+import { languages, type Language} from "../data/languages.js"
 import { useState } from 'react'
+import * as React from "react"
 import { nanoid } from "nanoid"
-import { getFarewellText, getRandomWord } from "/src/utils/utils.js"
+import { getFarewellText, getRandomWord } from "../utils/utils.js"
 
 
 export default function Hangman() {
 
-  const [guessedLetters, setGuessedLetters] = useState(() => new Set())
-  const [word, setWord] = useState(() => getRandomWord())
-  const alphabet = "abcdefghijklmnopqrstuvwxyz"
-  const wrongGuessCount = [...guessedLetters].reduce((acc, letter) => !word.includes(letter) ? acc + 1 : acc, 0)
-  const isGameWon = word.split("").every(letter => guessedLetters.has(letter))
-  const isGameLost = wrongGuessCount === languages.length - 1
-  const isGameOver = isGameWon || isGameLost
-  const lastGuessedLetter = Array.from(guessedLetters).pop()
-  const isLastGuessIncorrect = Array.from(guessedLetters)[0] && !word.includes(Array.from(guessedLetters).pop())
+  const [guessedLetters, setGuessedLetters] = useState<Set<string>>(() => new Set())
+  const [word, setWord] = useState<string>(() => getRandomWord())
+  const alphabet: string = "abcdefghijklmnopqrstuvwxyz"
+  const wrongGuessCount: number = [...guessedLetters].reduce((acc, letter) => !word.includes(letter) ? acc + 1 : acc, 0)
+  const isGameWon: boolean = word.split("").every(letter => guessedLetters.has(letter))
+  const isGameLost: boolean = wrongGuessCount === languages.length - 1
+  const isGameOver: boolean = isGameWon || isGameLost
+  const lastGuessedLetter: string = Array.from(guessedLetters).pop() || ""
+    const isLastGuessIncorrect: boolean =  Array.from(guessedLetters)[0] !== undefined ? !word.includes(Array.from(guessedLetters).pop() || "") : false
 
-  const languageElements = languages.map((lang, index) => {
+
+  const languageElements = languages.map((lang: Language, index: number) => {
     const styles = {
       backgroundColor: lang.backgroundColor,
       color: lang.color
@@ -39,14 +41,17 @@ export default function Hangman() {
     return <button key={letter} disabled={isGameOver} aria-label={`Letter: ${letter}`} aria-disabled={Array.from(guessedLetters).includes(letter)} className={`key ${correctStatus} ${disabled}`} onClick={() => addGuessedLetter(letter)}>{letter.toUpperCase()}</button>
   })
 
-  function addGuessedLetter(letter) {
+  function addGuessedLetter(letter: string) {
     if (!isGameOver)
     setGuessedLetters(prevLetters => new Set(prevLetters).add(letter))
+
   }
 
   function renderGameStatus() {
-    if (!isGameOver && isLastGuessIncorrect && wrongGuessCount > 0) { return <><h2>{getFarewellText(languages[wrongGuessCount - 1].name)}</h2></> }
-    
+  const lang = languages[wrongGuessCount - 1]
+  if (lang && !isGameOver && isLastGuessIncorrect && wrongGuessCount > 0) {
+    return <h2>{getFarewellText(lang.name)}</h2>
+  }
     if (isGameWon) { return <><h2>You win!</h2><p>Well done! 🎉</p></> }
     else if (isGameLost) { return <><h2>Game Over!</h2><p>You lose! Better start learning Assembly!</p></> }
     else { return <><h2></h2><p></p></> }
@@ -73,7 +78,7 @@ export default function Hangman() {
           <section className="word">
             {letterElements}
           </section>
-          <section className="sr-only" aria-live="polite" role="status" >
+          <section className="sr-only" aria-live="polite" role="status">
             <p>
               {word.includes(lastGuessedLetter) ? 
                   `Correct! The letter ${lastGuessedLetter} is in the word.` : 
