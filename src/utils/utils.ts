@@ -1,10 +1,11 @@
-import { words } from "/src/data/words"
+import { words } from "../data/words"
+import { type Language} from "../data/languages"
 
-export function getRandomWord() {
+export function getRandomWord(): string {
     return words[Math.floor(Math.random() * words.length)]
 }
 
-export function getFarewellText(language) {
+export function getFarewellText(language: string): string {
     const options = [
         `Farewell, ${language}`,
         `Adios, ${language}`,
@@ -20,6 +21,6 @@ export function getFarewellText(language) {
         `${language} has left the building`
     ];
 
-    const randomIndex = Math.floor(Math.random() * options.length);
+    const randomIndex: number = Math.floor(Math.random() * options.length);
     return options[randomIndex];
 }
